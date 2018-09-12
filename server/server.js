@@ -1,6 +1,8 @@
 //imports
 const path = require('path');
 const express = require('express');
+const socketIO = require('socket.io');
+const http = require('http');
 //directory magic
 const publicPath = path.join(__dirname, '../public');
 const indexPath = path.join(publicPath, '/index.html');
@@ -9,7 +11,20 @@ const port = process.env.PORT || 3000;
 
 //server
 var app = express();
+//we can pass in our express app because express is built right on top of http
+var server = http.createServer(app);
+//add socket.io functionality
+var io = socketIO(server);
 app.use(express.static(publicPath));
+
+//event listener
+io.on('connect', (socket) => {
+    console.log('somebodys here');
+    socket.on('disconnect', ()=> {
+        console.log('frig off');
+    });
+});
+
 
 //routes
 app.get('/', (req, res)=> {
@@ -19,6 +34,6 @@ app.get('/', (req, res)=> {
 
 
 //start server
-app.listen(port, () => {
+    server.listen(port, () => {
     console.log(`listening on port ${port}, bitches`);
 });
