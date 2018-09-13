@@ -20,17 +20,40 @@ app.use(express.static(publicPath));
 //event listener
 io.on('connect', (socket) => {
     console.log('somebodys here');
+
+    //send object to client
+    // socket.emit('newMessage', {
+    //    from: 'stav',
+    //     text: 'hell yeah dude',
+    //     createdAt: new Date().getTime()
+    // });
+
+    //listener for an event coming from client
+    socket.on('createMessage', (message)=> {
+        message.createdAt = new Date().getTime().toString();
+        console.log('NEW MESSAGE \n', message);
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        })
+    });
+
+
+
+
     socket.on('disconnect', ()=> {
         console.log('frig off');
     });
+
 });
+
 
 
 //routes
-app.get('/', (req, res)=> {
-   res.sendFile(indexPath);
-});
-
+// app.get('/', (req, res)=> {
+//     res.sendFile(indexPath);
+// });
 
 
 //start server
