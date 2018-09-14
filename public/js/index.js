@@ -24,7 +24,7 @@ var sendmessage = function () {
    var name = document.getElementById('name').value;
     socket.emit('createMessage', {
         from: name,
-        text: boxContents
+        text: boxContents,
     });
     document.getElementById('messageText').value = '';
 };
