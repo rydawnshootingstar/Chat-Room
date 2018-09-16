@@ -5,6 +5,7 @@ const socketIO = require('socket.io');
 const http = require('http');
 
 const {generateMessage} = require('./utils/message');
+const {generateLocationMessage} = require('./utils/message');
 //directory magic
 const publicPath = path.join(__dirname, '../public');
 const indexPath = path.join(publicPath, '/index.html');
@@ -36,6 +37,10 @@ io.on('connect', (socket) => {
         console.log('NEW MESSAGE \n', message);
         io.emit('newMessage', generateMessage(message.from, message.text));
         });
+
+    socket.on('createLocationMessage', (coords)=> {
+        io.emit('newLocationMessage', generateLocationMessage(coords.lat, coords.lng));
+    });
 
     socket.on('disconnect', ()=> {
         console.log('frig off');
