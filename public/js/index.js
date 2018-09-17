@@ -7,7 +7,7 @@ socket.on('connect', function () {
 //object being sent from server
 socket.on('newMessage', function (message) {
     console.log('NEW MESSAGE: \n', message);
-    $('#chatzone').append('\n', message.from, ':', message.text);
+    $('#chatzone').append('\n', message.from, ': ', message.text);
 });
 
 socket.on('newLocationMessage', function (message){
@@ -31,13 +31,15 @@ jQuery('#messageForm').on('submit', function (e) {
     //default action of submitting a form is not wanted
 e.preventDefault();
 
+//location submit
+var messageTextbox = $('[name=message]');
 socket.emit('createMessage', {
     from: 'User',
-    text: jQuery('[name=message]').val()
+    text: messageTextbox.val()
 }, function (){
-
+    //clear box after sending
+        messageTextbox.val('');
     });
-//clear box after sending
 $('[name=message]').val('');
 });
 
@@ -47,8 +49,13 @@ locationButton.on('click', function (){
    if(!navigator.geolocation) {
        return alert('Geolocation Not Supported By Browser');
    }
+   //if user has support for feature, disable it after a click, so you can't spam it
+   locationButton.attr('disabled', 'disabled');
+
    //get coordinates based on browser
    navigator.geolocation.getCurrentPosition(function(position){
+       //re-enables button
+       // locationButton.removeAttr('disabled');
         var lat = position.coords.latitude;
         var lng = position.coords.longitude;
         socket.emit('createLocationMessage', {
@@ -56,6 +63,7 @@ locationButton.on('click', function (){
             lng
         });
    }, function(err){
+       locationButton.removeAttr('disabled');
        alert('Unable to fetch location');
        console.log(err);
    });

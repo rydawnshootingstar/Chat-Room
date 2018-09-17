@@ -1,21 +1,42 @@
 <!DOCTYPE html>
 <html>
-<title>Welcome to Adam Chat</title>
+<title>Welcome to Cyber Chat</title>
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<body>
-<textarea id="chatzone" cols=""30 rows="5" style="margin: 0px; width: 219px; height: 482px;"></textarea>
+<body class="chat">
+<div class="chat__sidebar">
+    <h3>cyberchat</h3>
+    <p>online now</p>
+    <div id="users">
 
-<form id="messageForm">
-    <input name="message" type="text" placeholder="type message..." />
-    <button>Send</button>
-</form>
+    </div>
+    <div style="margin-top:10px;">
+        <h3>cool tools</h3>
+        <button id="sendLocation" style="margin-left: 10px;">Where am I?</button>
+        <ul id="locationholder">
+        </ul>
+    </div>
+</div>
+
+<div class="chat__main">
+    <textarea id="chatzone" class="chat__messages" cols=""30 rows="5">
+
+    </textarea>
+
+    <div class="chat__footer">
+        <form id="messageForm">
+            <input name="message" type="text" autofocus style = "margin-left:10px;" placeholder="type message..." />
+            <button>Send</button>
+        </form>
+    </div>
+</div>
+
+
 <br>
-<button id="sendLocation">Submit Location</button>
-<ul id="locationholder">
 
-</ul>
+
 
 <script src="/socket.io/socket.io.js"></script>
 <script src = "js/libs/jquery-3.3.1.min.js" type="text/javascript"></script>
