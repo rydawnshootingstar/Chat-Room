@@ -140,7 +140,7 @@ button:disabled {
 
 .chat__messages {
     flex-grow: 1;
-    overflow-y: scroll;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
 }
 

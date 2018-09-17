@@ -6,8 +6,18 @@ socket.on('connect', function () {
 
 //object being sent from server
 socket.on('newMessage', function (message) {
-    console.log('NEW MESSAGE: \n', message);
-    $('#chatzone').append('\n', message.from, ': ', message.text);
+    var formattedTime = moment(message.createdAt).format('h:mm');
+    var template = $('#message-template').html();
+    var html = Mustache.render(template, {
+        text: (message.text + '\n '),
+        from: message.from,
+        createdAt: formattedTime
+    });
+
+    $('#chatzone').append(html);
+    // var formattedTime = moment(message.createdAt).format('h:mm');
+    // console.log('NEW MESSAGE: \n', message);
+    // $('#chatzone').append('\n', message.from, ' [',formattedTime, ']: ', message.text);
 });
 
 socket.on('newLocationMessage', function (message){
@@ -33,8 +43,9 @@ e.preventDefault();
 
 //location submit
 var messageTextbox = $('[name=message]');
+var nameTextbox = $('[name=username]');
 socket.emit('createMessage', {
-    from: 'User',
+    from: nameTextbox.val(),
     text: messageTextbox.val()
 }, function (){
     //clear box after sending
