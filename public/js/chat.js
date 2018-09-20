@@ -1,5 +1,10 @@
+/*///////////////////////////////////////////////////
+*
+*                 OTHER FUNCTIONS
+*
+*
+*/////////////////////////////////////////////////////
 var socket = io();
-
 var scrollToBottom = function (){
     //selectors
     //gets entire OL
@@ -7,8 +12,7 @@ var scrollToBottom = function (){
     //last posted message
     var newMessage = messages.children('li:last-child');
 
-    //heights
-    //jquery way to cross browser select a property
+    //jquery way to cross-browser select a height property
     var clientHeight = messages.prop('clientHeight');
     var scrollTop = messages.prop('scrollTop');
     var scrollHeight = messages.prop('scrollHeight');
@@ -21,11 +25,30 @@ var scrollToBottom = function (){
     };
 };
 
-socket.on('connect', function () {
+/*///////////////////////////////////////////////////
+*
+*                 SOCKETS
+*
+*
+*/////////////////////////////////////////////////////
 
+/*listener for when user loads this file. they will click login on index, be redirected to chat.html
+* at which time this socket will be created, immediately requesting to join room
+* */
+socket.on('connect', function () {
+    var params = $.deparam(window.location.search);
+    socket.emit('joinRoom', params, function(err){
+        if(err){
+            alert(err);
+            //manipulate which page user is on (send them home)
+            window.location.href = '/';
+        }else{
+            console.log('no error joining room');
+        }
+    });
 });
 
-//object being sent from server
+//listener for messages coming back from server
 socket.on('newMessage', function (message) {
     var formattedTime = moment(message.createdAt).format('h:mm');
     var template = $('#message-template').html();
@@ -42,6 +65,7 @@ socket.on('newMessage', function (message) {
     // $('#chatzone').append('\n', message.from, ' [',formattedTime, ']: ', message.text);
 });
 
+//listener for location message coming back from server
 socket.on('newLocationMessage', function (message){
     var li=$('<li></li>');
    //opens a link in a new tab
@@ -52,28 +76,20 @@ socket.on('newLocationMessage', function (message){
    $('#locationholder').append(li);
 });
 
-
-window.onload = function () {
-
-};
-
-
-//e is the argument we get back and need to access
+/*submission of message to server (send button in chat.html)
+e is the argument we get back and need to access*/
 jQuery('#messageForm').on('submit', function (e) {
-    //default action of submitting a form is not wanted
+    //default action of submitting a form (POST request) is not wanted
 e.preventDefault();
-
-//location submit
 var messageTextbox = $('[name=message]');
-var nameTextbox = $('[name=username]');
 socket.emit('createMessage', {
-    from: nameTextbox.val(),
+    from: 'mitch',
     text: messageTextbox.val()
 }, function (){
     //clear box after sending
         messageTextbox.val('');
     });
-$('[name=message]').val('');
+//$('[name=message]').val('');
 });
 
 //# is select by id. this is actually the more efficient way to do this, rather than tack .on to the first call
@@ -82,13 +98,13 @@ locationButton.on('click', function (){
    if(!navigator.geolocation) {
        return alert('Geolocation Not Supported By Browser');
    }
-   //if user has support for feature, disable it after a click, so you can't spam it
+   /*if user has support for feature, disable it after a click, so they can't request again
+    side note: this re-enables button - locationButton.removeAttr('disabled');
+    */
    locationButton.attr('disabled', 'disabled');
 
    //get coordinates based on browser
    navigator.geolocation.getCurrentPosition(function(position){
-       //re-enables button
-       // locationButton.removeAttr('disabled');
         var lat = position.coords.latitude;
         var lng = position.coords.longitude;
         socket.emit('createLocationMessage', {
@@ -102,8 +118,17 @@ locationButton.on('click', function (){
    });
 });
 
-
+//listener for connection with the server
 socket.on('disconnect', function () {
     console.log('server ded');
+});
 
+//listener for userlist. updates in the sidebar of chat.html
+socket.on('updateUserList', function (users){
+    var ol = $('<ol> </ol>');
+    users.forEach(function (user){
+        ol.append($('<li></li>').text(user));
+    });
+    //div element inside sidebar
+    $('#users').html(ol);
 });

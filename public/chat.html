@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<title>Welcome to Cyber Chat</title>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+</head>
+<body class="chat">
+<div class="chat__sidebar">
+    <h3>cyberchat</h3>
+    <p>online now</p>
+    <div id="users">
+
+    </div>
+    <div style="margin-top:10px;">
+        <h3>cool tools</h3>
+        <button id="sendLocation" style="margin-left: 10px;">Where am I?</button>
+        <ul id="locationholder">
+        </ul>
+    </div>
+</div>
+
+<div class="chat__main">
+
+    <ol id="chatzone" class="chat__messages"></ol>
+
+    <div class="chat__footer">
+        <form id="messageForm">
+            <input name="message" type="text" autofocus style = "margin-left:10px;" placeholder="type message..." />
+            <button>Send</button>
+        </form>
+    </div>
+</div>
+
+
+<br>
+
+<script id="message-template" type="text/template">
+    <li class="message">
+        <div class="message__title">
+            <h4>{{from}}</h4>
+            <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body">
+            <p>{{text}}</p>
+        </div>
+    </li>
+</script>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src = "js/libs/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="js/chat.js" type="text/javascript"></script>
+<script src="js/libs/moment.js" type="text/javascript"></script>
+<script src="js/libs/mustache.js" type="text/javascript"></script>
+<script src="js/libs/deparam.js" type="text/javascript"></script>
+</body>
+<footer>
+
+</footer>
+</html>

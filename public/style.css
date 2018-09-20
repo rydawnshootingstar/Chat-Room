@@ -49,6 +49,18 @@ button:disabled {
     cursor: default;
     background: #698ea5;
 }
+.centered-formnew {
+	display:flex;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
+	justify-content: center;
+	background: rgb(251,108,229); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(251,108,229,0.75) 0%, rgba(251,108,229,0.75) 22%, rgba(251,108,229,0.78) 32%, rgba(62,27,34,0.89) 66%, rgba(62,27,34,0.99) 98%, rgba(62,27,34,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(251,108,229,0.75) 0%,rgba(251,108,229,0.75) 22%,rgba(251,108,229,0.78) 32%,rgba(62,27,34,0.89) 66%,rgba(62,27,34,0.99) 98%,rgba(62,27,34,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(251,108,229,0.75) 0%,rgba(251,108,229,0.75) 22%,rgba(251,108,229,0.78) 32%,rgba(62,27,34,0.89) 66%,rgba(62,27,34,0.99) 98%,rgba(62,27,34,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bffb6ce5', endColorstr='#3e1b22',GradientType=0 ); /* IE6-9 */
+}
 
 .centered-form {
     display: flex;
@@ -131,8 +143,16 @@ button:disabled {
     margin: 10px;
 }
 
+.video__container{
+    height:50vh;
+    float:top;
+    margin-bottom: 10px;
+    width:100%;
+}
+
 .chat__main {
     display: flex;
+    float: bottom;
     flex-direction: column;
     height: 100vh;
     width: 100%;
