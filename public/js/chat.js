@@ -83,13 +83,12 @@ jQuery('#messageForm').on('submit', function (e) {
 e.preventDefault();
 var messageTextbox = $('[name=message]');
 socket.emit('createMessage', {
-    from: 'mitch',
     text: messageTextbox.val()
 }, function (){
     //clear box after sending
-        messageTextbox.val('');
+        //messageTextbox.val('');
     });
-//$('[name=message]').val('');
+$('[name=message]').val('');
 });
 
 //# is select by id. this is actually the more efficient way to do this, rather than tack .on to the first call

@@ -71,13 +71,21 @@ io.on('connect', (socket) => {
 
     //listener for message event coming from client, emit message back to them (button in chat.html)
     socket.on('createMessage', (message)=> {
-        console.log('NEW MESSAGE \n', message);
-        io.emit('newMessage', generateMessage(message.from, message.text));
+        var user = users.getUser(socket.id);
+            //only send message if user exists and message text wasn't blank
+            if(user && isRealString(message.text)){
+                io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+            }
         });
 
     //listener for location event (button in chat.html)
     socket.on('createLocationMessage', (coords)=> {
-        socket.emit('newLocationMessage', generateLocationMessage(coords.lat, coords.lng));
+
+        var user = users.getUser(socket.id);
+
+        if(user){
+            socket.emit('newLocationMessage', generateLocationMessage(coords.lat, coords.lng));
+        }
     });
 
     //listener for disconnected clients

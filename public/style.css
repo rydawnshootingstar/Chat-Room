@@ -135,6 +135,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bffb6ce5', e
     list-style-type: none;
 }
 
+.chat__sidebar ol {
+    list-style-type: none;
+}
+
 .chat__sidebar li {
     background: #e6eaee;
     border: 1px solid #e1e1e1;
